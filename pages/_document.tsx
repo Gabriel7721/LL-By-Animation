@@ -18,16 +18,20 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta name="description" content="Linked List Visualizer" />
           <meta
             name="description"
-            content="A linked list is a data structure consisting of a collection of objects stored at random memory blocks,  connected together by pointers. Each object or data element called node points to the next node in the linked list."
+            content="Minh họa trực quan các thao tác trên Linked List"
           />
           <meta
             name="description"
-            content="See different linked list operations visually."
+            content="Linked list là một data structure bao gồm tập hợp các object được lưu tại các vùng nhớ rời rạc, được liên kết với nhau thông qua pointer. Mỗi object hay phần tử dữ liệu — gọi là node — sẽ trỏ đến node kế tiếp trong linked list."
           />
-          <meta name="description" content="Jai K. Pillai" />
+          <meta
+            name="description"
+            content="Quan sát trực quan cách các thao tác trên linked list được thực hiện."
+          />
+          <meta name="description" content="GB" />
+
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

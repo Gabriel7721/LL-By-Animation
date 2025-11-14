@@ -80,7 +80,7 @@ export const LinkedListView = () => {
         <Text
           className="max-w-2xl dark:text-neutral-400 text-left lg:text-center rounded-full "
           varient="paragraph"
-          text="Visualize different Singly Linked List operations in action."
+          text="Trực quan hóa các thao tác khác nhau của Singly Linked List trong quá trình thực thi."
         />
       </div>
       <br />
