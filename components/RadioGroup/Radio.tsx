@@ -1,30 +1,34 @@
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import * as React from "react";
 import { Label } from "../Label";
 import { RadioGroupIndicator, RadioGroupRadio } from "./RadioGroup";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 
-interface IRadio
-  extends RadioGroupPrimitive.RadioGroupItemProps,
-    RefAttributes<HTMLButtonElement> {
+type RadioItemProps = React.ComponentPropsWithoutRef<
+  typeof RadioGroupPrimitive.Item
+>;
+
+interface IRadio extends Omit<RadioItemProps, "children"> {
   label: string;
-  value: any;
 }
 
-export const Radio: React.FunctionComponent<IRadio> = (props) => {
+export const Radio: React.FC<IRadio> = (props) => {
+  const { label, id, disabled, ...itemProps } = props;
+
   return (
     <div className="flex items-center gap-2">
-      <RadioGroupRadio id={props.id} {...props}>
+      <RadioGroupRadio id={id} disabled={disabled} {...itemProps}>
         <RadioGroupIndicator />
       </RadioGroupRadio>
+
       <Label
         className={`select-none font-normal ${
-          props.disabled === true
+          disabled
             ? "dark:text-neutral-500 text-neutral-400"
             : "dark:text-white text-black"
         }`}
-        htmlFor={props.id}
+        htmlFor={id}
       >
-        {props.label}
+        {label}
       </Label>
     </div>
   );
