@@ -1,167 +1,196 @@
+import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import React from "react";
-import tw from "tailwind-styled-components";
 
-const StyledTrigger = tw(SelectPrimitive.Trigger)`
-
-inline-flex
-items-center
-justify-between
-
-pt-2
-pb-2
-pl-2
-pr-2
-
-
-gap-2 
-outline
-outline-1
-bg-white
-
-dark:outline-0
-outline-neutral-300
-
-dark:text-primary-50
-dark:hover:bg-neutral-700
-dark:bg-neutral-600
-
-rounded-md
-hover:bg-neutral-50
-leading-3
-
-max-h-10
-text-left
-text-sm
-text-neutral-900
-
-
-${(
-  p: SelectPrimitive.SelectTriggerProps & React.RefAttributes<HTMLButtonElement>
-) => p.className}
-
-`;
-
-const StyledIconTrigger = tw(SelectPrimitive.Trigger)`
-flex
-items-center
-
-rounded-md
-
-p-2
-`;
-
-const StyledIcon = tw(SelectPrimitive.SelectIcon)`
-`;
-
-const StyledValue = tw(SelectPrimitive.SelectValue)`
-
-`;
-
-const StyledContent = tw(SelectPrimitive.Content)`
-overflow-hidden
-bg-white
-z-50
-shadow-md
-rounded-md
-
-`;
-
-function Content({ children, ...props }: { children: React.ReactNode }) {
-  return (
-    <SelectPrimitive.Portal>
-      <StyledContent {...props}>{children}</StyledContent>
-    </SelectPrimitive.Portal>
-  );
+function cn(...classes: Array<string | undefined | false>) {
+  return classes.filter(Boolean).join(" ");
 }
 
-const StyledViewport = tw(SelectPrimitive.Viewport)`
-p-1
-min-w-[150px]
-`;
-
-const StyledItem = tw(SelectPrimitive.Item)<SelectPrimitive.SelectItemProps>`
-clear-both
-pl-10
-pr-2
-pt-2
-pb-2
-text-sm
-leading-normal
-cursor-default
-flex
-rounded-md
-items-center
-
-${(p: SelectPrimitive.SelectItemProps) =>
-  p.disabled
-    ? "text-neutral-200 select-none bg-none"
-    : "hover:bg-primary-800 hover:text-white"}
-
-[&[data-highlighted]]:bg-primary-800
-[&[data-highlighted]]:text-white
-
-  `;
-
-const StyledLabel = tw(SelectPrimitive.Label)`
-text-sm
-text-neutral-600
-pl-2
-pr-2
-pt-1
-pb-1
-cursor-default
-`;
-
-const StyledSeparator = tw(SelectPrimitive.SelectSeparator)`
-h-px
-bg-neutral-200
-ml-px
-mr-px
-mt-1
-mb-1
-`;
-
-const StyledItemIndicator = tw(SelectPrimitive.ItemIndicator)`
-absolute
-left-0
-w-12
-inline-flex
-items-center
-justify-center
-`;
-
-const StyledScrollUpButton = tw(SelectPrimitive.ScrollUpButton)`items-center
-flex
-justify-center
-h-2
-bg-neutral-900`;
-
-const StyledScrollDownButton = tw(SelectPrimitive.ScrollDownButton)`items-center
-flex
-justify-center
-h-2
-bg-neutral-900`;
-
-// Exports
+// Exports root/group/text primitives
 export const Select = SelectPrimitive.Root;
-export const SelectTrigger: React.ForwardRefExoticComponent<
-  SelectPrimitive.SelectTriggerProps & React.RefAttributes<HTMLButtonElement>
-> = StyledTrigger;
-export const SelectIconTrigger: React.ForwardRefExoticComponent<
-  SelectPrimitive.SelectTriggerProps & React.RefAttributes<HTMLButtonElement>
-> = StyledIconTrigger;
-export const SelectValue = StyledValue;
-export const SelectIcon = StyledIcon;
-export const SelectContent = Content;
-export const SelectViewport = StyledViewport;
 export const SelectGroup = SelectPrimitive.Group;
-export const SelectItem: React.ForwardRefExoticComponent<
-  SelectPrimitive.SelectItemProps & React.RefAttributes<HTMLDivElement>
-> = StyledItem;
-export const SelectLabel = StyledLabel;
 export const SelectItemText = SelectPrimitive.ItemText;
-export const SelectSeparator = StyledSeparator;
-export const SelectItemIndicator = StyledItemIndicator;
-export const SelectScrollUpButton = StyledScrollUpButton;
-export const SelectScrollDownButton = StyledScrollDownButton;
+
+// Trigger
+type TriggerProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Trigger
+>;
+export const SelectTrigger = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Trigger>,
+  TriggerProps
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Trigger
+    ref={ref}
+    className={cn(
+      "inline-flex items-center justify-between pt-2 pb-2 pl-2 pr-2 gap-2 outline outline-1 bg-white outline-neutral-300 rounded-md hover:bg-neutral-50 leading-3 max-h-10 text-left text-sm text-neutral-900 dark:outline-0 dark:text-primary-50 dark:hover:bg-neutral-700 dark:bg-neutral-600",
+      className,
+    )}
+    {...props}
+  />
+));
+SelectTrigger.displayName = "SelectTrigger";
+
+// IconTrigger (nếu cần style khác)
+export const SelectIconTrigger = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Trigger>,
+  TriggerProps
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Trigger
+    ref={ref}
+    className={cn("flex items-center rounded-md p-2", className)}
+    {...props}
+  />
+));
+SelectIconTrigger.displayName = "SelectIconTrigger";
+
+// Icon / Value
+export const SelectIcon = SelectPrimitive.Icon;
+export const SelectValue = SelectPrimitive.Value;
+
+// Content
+type ContentProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Content
+>;
+export const SelectContent = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Content>,
+  ContentProps
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Portal>
+    <SelectPrimitive.Content
+      ref={ref}
+      className={cn(
+        "overflow-hidden bg-white z-50 shadow-md rounded-md",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </SelectPrimitive.Content>
+  </SelectPrimitive.Portal>
+));
+SelectContent.displayName = "SelectContent";
+
+// Viewport
+type ViewportProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Viewport
+>;
+export const SelectViewport = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Viewport>,
+  ViewportProps
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Viewport
+    ref={ref}
+    className={cn("p-1 min-w-[150px]", className)}
+    {...props}
+  />
+));
+SelectViewport.displayName = "SelectViewport";
+
+// Item
+type ItemProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>;
+export const SelectItem = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Item>,
+  ItemProps
+>(({ className, disabled, ...props }, ref) => (
+  <SelectPrimitive.Item
+    ref={ref}
+    disabled={disabled}
+    className={cn(
+      "clear-both pl-10 pr-2 pt-2 pb-2 text-sm leading-normal cursor-default flex rounded-md items-center [&[data-highlighted]]:bg-primary-800 [&[data-highlighted]]:text-white",
+      disabled
+        ? "text-neutral-200 select-none"
+        : "hover:bg-primary-800 hover:text-white",
+      className,
+    )}
+    {...props}
+  />
+));
+SelectItem.displayName = "SelectItem";
+
+// Label
+type LabelProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>;
+export const SelectLabel = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Label>,
+  LabelProps
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Label
+    ref={ref}
+    className={cn(
+      "text-sm text-neutral-600 pl-2 pr-2 pt-1 pb-1 cursor-default",
+      className,
+    )}
+    {...props}
+  />
+));
+SelectLabel.displayName = "SelectLabel";
+
+// Separator
+type SeparatorProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Separator
+>;
+export const SelectSeparator = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Separator>,
+  SeparatorProps
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Separator
+    ref={ref}
+    className={cn("h-px bg-neutral-200 ml-px mr-px mt-1 mb-1", className)}
+    {...props}
+  />
+));
+SelectSeparator.displayName = "SelectSeparator";
+
+// ItemIndicator
+type IndicatorProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.ItemIndicator
+>;
+export const SelectItemIndicator = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ItemIndicator>,
+  IndicatorProps
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.ItemIndicator
+    ref={ref}
+    className={cn(
+      "absolute left-0 w-12 inline-flex items-center justify-center",
+      className,
+    )}
+    {...props}
+  />
+));
+SelectItemIndicator.displayName = "SelectItemIndicator";
+
+// Scroll buttons
+type ScrollUpProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.ScrollUpButton
+>;
+export const SelectScrollUpButton = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
+  ScrollUpProps
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.ScrollUpButton
+    ref={ref}
+    className={cn(
+      "flex items-center justify-center h-2 bg-neutral-900",
+      className,
+    )}
+    {...props}
+  />
+));
+SelectScrollUpButton.displayName = "SelectScrollUpButton";
+
+type ScrollDownProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.ScrollDownButton
+>;
+export const SelectScrollDownButton = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
+  ScrollDownProps
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.ScrollDownButton
+    ref={ref}
+    className={cn(
+      "flex items-center justify-center h-2 bg-neutral-900",
+      className,
+    )}
+    {...props}
+  />
+));
+SelectScrollDownButton.displayName = "SelectScrollDownButton";
