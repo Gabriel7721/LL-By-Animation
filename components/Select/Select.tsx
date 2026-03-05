@@ -29,14 +29,25 @@ export const SelectTrigger = React.forwardRef<
 ));
 SelectTrigger.displayName = "SelectTrigger";
 
-// IconTrigger (nếu cần style khác)
 export const SelectIconTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   TriggerProps
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
-    className={cn("flex items-center rounded-md p-2", className)}
+    className={cn(
+      // chuẩn button-control
+      "inline-flex h-10 items-center rounded-md px-3",
+      // icon + value layout
+      "gap-2 justify-between",
+      // typography
+      "text-sm leading-none text-white",
+      // background + hover + focus ring
+      "bg-black/60 hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
+      // tránh text xuống dòng / vỡ layout
+      "whitespace-nowrap",
+      className,
+    )}
     {...props}
   />
 ));
