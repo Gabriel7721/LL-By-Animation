@@ -5,12 +5,10 @@ function cn(...classes: Array<string | undefined | false>) {
   return classes.filter(Boolean).join(" ");
 }
 
-// Exports root/group/text primitives
 export const Select = SelectPrimitive.Root;
 export const SelectGroup = SelectPrimitive.Group;
 export const SelectItemText = SelectPrimitive.ItemText;
 
-// Trigger
 type TriggerProps = React.ComponentPropsWithoutRef<
   typeof SelectPrimitive.Trigger
 >;
@@ -36,15 +34,10 @@ export const SelectIconTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      // chuẩn button-control
       "inline-flex h-10 items-center rounded-md px-3",
-      // icon + value layout
       "gap-2 justify-between",
-      // typography
       "text-sm leading-none text-white",
-      // background + hover + focus ring
       "bg-black/60 hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
-      // tránh text xuống dòng / vỡ layout
       "whitespace-nowrap",
       className,
     )}
