@@ -33,9 +33,10 @@ export const AnimationSpeedDropDown = () => {
         defaultValue={String(animationSpeed)}
       >
         <SelectIconTrigger className="bg-black/60">
-          <SelectValue>
-            <LightningBoltIcon color="white" />
-          </SelectValue>
+          {/* <SelectValue> */}
+          <LightningBoltIcon color="white" />
+          <SelectValue placeholder="Animation" />
+          {/* </SelectValue> */}
 
           {/* <SelectIcon>
           <LightningBoltIcon />
