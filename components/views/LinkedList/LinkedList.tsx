@@ -33,11 +33,27 @@ import { AnimationSpeedDropDown } from "../../Settings";
 import { DarkThemeToggle } from "../../Settings/DarkThemToggle";
 import general from "../../../general";
 import Link from "next/link";
+import { linkedListCSource } from "./linkedListCSources";
 
 export const LinkedListView = () => {
   const { list, operation, setOperation, subOperation } =
     useContext(LinkedListContext);
   const [showEmpty, setShowEmpty] = useState(true);
+  const [informationTab, setInformationTab] = useState<"information" | "source">("information");
+  const [codeCopied, setCodeCopied] = useState(false);
+
+  useEffect(() => {
+    setCodeCopied(false);
+  }, [subOperation]);
+
+  const copySourceCode = async () => {
+    try {
+      await navigator.clipboard.writeText(linkedListCSource(subOperation));
+      setCodeCopied(true);
+    } catch {
+      setCodeCopied(false);
+    }
+  };
 
   const addInitalElements = async () => {
     await sleep(500);
@@ -274,21 +290,80 @@ export const LinkedListView = () => {
 
         <DataPanel />
 
-        {/* Information Panel */}
-        <Panel className="w-full lg:w-2/5 flex flex-col h-64 gap-1 md:-order-1 order-3 overflow-y-auto">
-          <Label>Information</Label>
+        {/* Information / Source Code tabs: same panel, no changes to animations. */}
+        <Panel className="w-full lg:w-2/5 flex flex-col h-64 gap-2 md:-order-1 order-3 min-w-0">
+          <div className="flex w-full shrink-0 gap-1 border-b border-neutral-300 dark:border-neutral-600" role="tablist" aria-label="Linked List learning material">
+            <button
+              type="button"
+              role="tab"
+              id="linked-list-information-tab"
+              aria-controls="linked-list-material-panel"
+              aria-selected={informationTab === "information"}
+              onClick={() => setInformationTab("information")}
+              className={`px-2 py-1.5 text-xs sm:text-sm font-medium border-b-2 transition-colors ${
+                informationTab === "information"
+                  ? "border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400"
+                  : "border-transparent text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+              }`}
+            >
+              Information
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="linked-list-source-tab"
+              aria-controls="linked-list-material-panel"
+              aria-selected={informationTab === "source"}
+              onClick={() => setInformationTab("source")}
+              className={`px-2 py-1.5 text-xs sm:text-sm font-medium border-b-2 transition-colors ${
+                informationTab === "source"
+                  ? "border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400"
+                  : "border-transparent text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+              }`}
+            >
+              Source Code
+            </button>
+          </div>
 
-          <pre className="whitespace-pre-line">
-            <Label className="mt-2 font-bold">{`${subOperation}()`}</Label>
-            <Text
-              varient="paragraph"
-              text={
-                LinkedListSubOperations[operation].filter(
-                  (ele) => ele.name === subOperation
-                )[0]?.description || ""
-              }
-            ></Text>
-          </pre>
+          <div
+            id="linked-list-material-panel"
+            role="tabpanel"
+            aria-labelledby={informationTab === "information" ? "linked-list-information-tab" : "linked-list-source-tab"}
+            className="min-h-0 flex-1 overflow-auto"
+          >
+            {informationTab === "information" ? (
+              <pre className="whitespace-pre-line">
+                <Label className="mt-2 font-bold">{`${subOperation}()`}</Label>
+                <Text
+                  varient="paragraph"
+                  text={
+                    LinkedListSubOperations[operation].filter(
+                      (ele) => ele.name === subOperation
+                    )[0]?.description || ""
+                  }
+                />
+              </pre>
+            ) : (
+              <div className="min-w-0">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
+                    C99 · {subOperation}()
+                  </span>
+                  <button
+                    type="button"
+                    onClick={copySourceCode}
+                    className="shrink-0 rounded px-2 py-1 text-xs bg-neutral-200 hover:bg-neutral-300 text-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-100"
+                    aria-label={`Copy C source for ${subOperation}`}
+                  >
+                    {codeCopied ? "Copied!" : "Copy code"}
+                  </button>
+                </div>
+                <pre className="block max-w-full overflow-x-auto rounded-md border border-neutral-300 bg-neutral-100 p-3 font-mono text-xs leading-relaxed text-neutral-900 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white">
+                  <code className="block whitespace-pre text-inherit">{linkedListCSource(subOperation)}</code>
+                </pre>
+              </div>
+            )}
+          </div>
         </Panel>
       </div>
 
